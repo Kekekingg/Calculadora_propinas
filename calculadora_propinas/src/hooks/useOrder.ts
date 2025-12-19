@@ -5,15 +5,29 @@ export default function useOrder() {
     const [order, setOrder] = useState<OrderItem[]>([])
     
     const addItem = (item : MenuItem) => {
+        const itemExist = order.find(orderItem => orderItem.id === item.id)
+        if(itemExist) {
+            //Encuentra si ya existe un item, si existe actualiza la cantidad
+            const updatedOrder = order.map(orderItem => orderItem.id === item.id ? //Si existe salta al orderItem
+                {...orderItem, quantity: orderItem.quantity + 1 } :  //Si es el mismo item, aumenta la cantidad
+                orderItem //Es la parte que regresa el item
+            )
+            setOrder(updatedOrder)
+        } else {
+            const newItem = {...item, quantity:1}
+            setOrder([...order, newItem])
+        }
         
-        const newItem = {...item, quantity:1}
-        setOrder([...order, newItem])
     }
 
-    console.log(order);
+    const removeItems = (id: MenuItem['id']) => {
+        setOrder(order.filter(item => item.id !== id))
+    }
 
     return {
-        addItem
+        order,
+        addItem,
+        removeItems
     }
     
 }

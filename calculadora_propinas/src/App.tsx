@@ -1,10 +1,13 @@
 import MenuItem from "./components/MenuItem"
+import OrderContents from "./components/OrderContents"
+import OrderTotal from "./components/OrderTotal"
+import TipPercentageForm from "./components/TipPercentageForm"
 import { menuItems } from "./data/db"
 import useOrder from "./hooks/useOrder"
 
 function App() {
 
-  const { addItem } = useOrder()
+  const { order, addItem, removeItems } = useOrder()
 
   return (
     <>
@@ -20,16 +23,28 @@ function App() {
             {menuItems.map(item => (
               <MenuItem
               //Necesario un key unico para cada elemento renderizado en un array
-              key={item.id} 
-              item={item}
-              addItem={addItem}
+                key={item.id} 
+                item={item}
+                addItem={addItem}
+                
               />
             ))}
           </div>
         </div>
 
-        <div>
-          <h2>Consumo</h2>
+        <div className="border border-dashed border-slate-300 p-5 rounded-lg space-y-10">
+            <OrderContents
+              order={order}
+              removeItems={removeItems}
+            />
+
+            <TipPercentageForm
+            
+            />
+
+            <OrderTotal
+              order={order}
+            />
         </div>
       </main>
 
